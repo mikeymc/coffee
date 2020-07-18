@@ -1,0 +1,10 @@
+{
+  "name": "coffee",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mikey McCormack <michaeljohnmccormack@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^5.2.0"
+  }
+}
