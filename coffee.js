@@ -23,33 +23,24 @@ async function getVisual() {
         await page.waitForNavigation();
         let coffeeList = await page.$x(coffeeTableRowsXPath);
 
-        console.log('There are ', coffeeList.length, ' coffees...');
+        for (let i = 0; i < coffeeList.length; i++) {
+            let nameLink = await coffeeList[0].$x(coffeeNameXPath);
+            await nameLink[i].click();
+            await page.waitForNavigation();
 
-        // choose first coffee
-        let nameLink = await coffeeList[0].$x(coffeeNameXPath);
-        await nameLink[0].click();
-        await page.waitForNavigation();
-
-        let coffeeName = await page.$eval('.page-title .base', node => node.innerText)
-        let coffeeScore = await page.$eval('.total-score .score-value', node => node.innerText)
-        let arrivalDateElement = await page.$x(arrivalDateXPath)
-        let arrivalDate = await arrivalDateElement[0].$eval('.data', node => node.innerText.trim())
-        console.log('Name: ', coffeeName, ' | ', 'Score: ', coffeeScore, ' | ', 'Arrived: ', arrivalDate);
-        await page.goBack();
-        // end first coffee
-
-        // choose second coffee
-        coffeeList = await page.$x(coffeeTableRowsXPath);
-        nameLink = await coffeeList[0].$x(coffeeNameXPath);
-        await nameLink[1].click();
-        await page.waitForNavigation();
-
-        coffeeName = await page.$eval('.page-title .base', node => node.innerText)
-        coffeeScore = await page.$eval('.total-score .score-value', node => node.innerText)
-        arrivalDateElement = await page.$x(arrivalDateXPath)
-        arrivalDate = await arrivalDateElement[0].$eval('.data', node => node.innerText.trim())
-        console.log('Name: ', coffeeName, ' | ', 'Score: ', coffeeScore, ' | ', 'Arrived: ', arrivalDate);
-        // end second coffee
+            let coffeeName = await page.$eval('.page-title .base', node => node.innerText)
+            let score = await page.$('.total-score .score-value');
+            if (score) {
+                let coffeeScore = await page.$eval('.total-score .score-value', node => node.innerText)
+                let arrivalDateElement = await page.$x(arrivalDateXPath)
+                if (arrivalDateElement && arrivalDateElement[0]) {
+                    let arrivalDate = await arrivalDateElement[0].$eval('.data', node => node.innerText.trim())
+                    console.log('Name: ', coffeeName, ' | ', 'Score: ', coffeeScore, ' | ', 'Arrived: ', arrivalDate);
+                }
+            }
+            await page.goBack();
+            coffeeList = await page.$x(coffeeTableRowsXPath);
+        }
 
         await browser.close()
     } catch (error) {
