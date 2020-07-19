@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer')
-const {sort} = require('./sort.js');
+const {sort, parseDate} = require('./helpers.js');
 
 const greenCoffeeLinkXPath = '//nav[@class="navigation"]//a[contains(., "Green Coffee")]';
 const viewAllCoffeeButtonXPath = '//div[@class="control"]//a[contains(., "View All")]';
@@ -7,7 +7,7 @@ const arrivalDateXPath = '//table[@class="additional-attributes-table"]//tr[cont
 const coffeeTableRowsXPath = '//tr[contains(@class, "item")]';
 const coffeeNameXPath = '//td[@class="product-item-name"]//a';
 
-async function getVisual() {
+async function scrapeSweetMariasWebsiteForData() {
     try {
         const URL = 'https://www.sweetmarias.com'
         const browser = await puppeteer.launch({
@@ -45,20 +45,15 @@ async function getVisual() {
             greenCoffeeTableRows = await page.$x(coffeeTableRowsXPath);
         }
 
-        console.log(sort(greenCoffees));
         await browser.close()
+
+        return greenCoffees;
     } catch (error) {
         console.error(error)
     }
 }
 
-function parseDate(dateString) {
-    let dateTokens = dateString.split(' ');
-    const monthNumLookupTable = {
-        'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
-        'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
-    };
-    return new Date(dateTokens[1], monthNumLookupTable[dateTokens[0]], 1)
-}
-
-getVisual()
+scrapeSweetMariasWebsiteForData().then((data) => {
+    let coffeeList = data;
+    console.log(sort(coffeeList));
+});

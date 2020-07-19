@@ -1,4 +1,4 @@
-const {sort} = require('./sort.js');
+const {sort} = require('./helpers.js');
 
 test('sorting by date descending', () => {
     let sortedCoffees = sort(unsortedCoffees);
