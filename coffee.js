@@ -13,18 +13,18 @@ async function getVisual() {
             slowMo: 0
         })
         const page = await browser.newPage()
-
         await page.goto(URL)
-        const greenCoffeeLink = await page.$x(greenCoffeeLinkXPath);
-        await greenCoffeeLink[0].click();
-        await page.waitForNavigation();
-        const viewAllLink = await page.$x(viewAllCoffeeButtonXPath);
-        await viewAllLink[0].click();
-        await page.waitForNavigation();
-        let coffeeList = await page.$x(coffeeTableRowsXPath);
 
-        for (let i = 0; i < coffeeList.length; i++) {
-            let nameLink = await coffeeList[0].$x(coffeeNameXPath);
+        const linkToGreenCoffeePage = await page.$x(greenCoffeeLinkXPath);
+        await linkToGreenCoffeePage[0].click();
+        await page.waitForNavigation();
+        const linkToViewAllGreenCoffees = await page.$x(viewAllCoffeeButtonXPath);
+        await linkToViewAllGreenCoffees[0].click();
+        await page.waitForNavigation();
+        let greenCoffeeTableRows = await page.$x(coffeeTableRowsXPath);
+
+        for (let i = 0; i < greenCoffeeTableRows.length; i++) {
+            let nameLink = await greenCoffeeTableRows[0].$x(coffeeNameXPath);
             await nameLink[i].click();
             await page.waitForNavigation();
 
@@ -39,7 +39,7 @@ async function getVisual() {
                 }
             }
             await page.goBack();
-            coffeeList = await page.$x(coffeeTableRowsXPath);
+            greenCoffeeTableRows = await page.$x(coffeeTableRowsXPath);
         }
 
         await browser.close()
