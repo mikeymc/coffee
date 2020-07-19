@@ -5,3 +5,7 @@ I needed a way to quickly compare all the raw coffee beans on the Sweet Maria's 
 Manually, I have to click many times to look at the arrival dates, scores, types, flavor profiles, and sources of each.
 
 This tool automates all that clicking around.
+
+To run:
+yarn install
+node coffee.js
