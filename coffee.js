@@ -7,7 +7,7 @@ const arrivalDateXPath = '//table[@class="additional-attributes-table"]//tr[cont
 const coffeeTableRowsXPath = '//tr[contains(@class, "item")]';
 const coffeeNameXPath = '//td[@class="product-item-name"]//a';
 
-async function scrapeSweetMariasWebsiteForData() {
+async function scrapeSweetMariasWebsiteForData(args) {
     try {
         const URL = 'https://www.sweetmarias.com'
         const browser = await puppeteer.launch({
@@ -26,7 +26,8 @@ async function scrapeSweetMariasWebsiteForData() {
         let greenCoffeeTableRows = await page.$x(coffeeTableRowsXPath);
         let greenCoffees = [];
 
-        for (let i = 0; i < greenCoffeeTableRows.length; i++) {
+        let amountToQuery = args && args.testing ? 3 : greenCoffeeTableRows.length;
+        for (let i = 0; i < amountToQuery; i++) {
             let nameLink = await greenCoffeeTableRows[0].$x(coffeeNameXPath);
             await nameLink[i].click();
             await page.waitForNavigation();
@@ -57,3 +58,5 @@ scrapeSweetMariasWebsiteForData().then((data) => {
     let coffeeList = data;
     console.log(sort(coffeeList));
 });
+
+module.exports = {scrapeSweetMariasWebsiteForData}
