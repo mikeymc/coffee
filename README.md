@@ -7,5 +7,4 @@ Manually, I have to click many times to look at the arrival dates, scores, types
 This tool automates all that clicking around.
 
 To run:
-yarn install
-node coffee.js
+yarn install && node coffee.js
